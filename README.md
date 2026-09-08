@@ -54,14 +54,43 @@ number of contacts and phones per contact does not matter, gaps in the numbering
 are fine, and variants like `Contact1_First` or `Property Address` are recognised.
 Files with no phone columns are flagged in the file list and skipped.
 
+## Installing
+
+Neither build is signed by a paid certificate, so both operating systems warn once.
+
+**macOS.** Open the `.dmg`, drag the app to Applications, launch it, and when the
+warning appears go to System Settings > Privacy & Security, scroll to Security and
+click **Open Anyway**. Right-click > Open no longer works on macOS 15 and later.
+To skip the warning entirely, clear the download flag first:
+
+```
+xattr -dr com.apple.quarantine "/Applications/Lead Cleaner.app"
+```
+
+**Windows.** Run the installer; at "Windows protected your PC" click **More info**
+then **Run anyway**.
+
 ## Running and building
 
 ```
 npm install
 npm start          # run it
 npm run dist:mac   # build the .dmg
-npm run dist:win   # build the Windows installer (needs Wine on macOS, or a Windows box)
+npm run dist:win   # build the Windows installer
+npm run dist:all   # both
 ```
+
+Builds are written to `~/.lead-cleaner-build` and the installers are then copied
+into `dist/`. The output has to live outside `~/Documents` and `~/Desktop`: those
+are iCloud File Provider domains, which stamp `com.apple.FinderInfo` onto app
+bundles, and `codesign` refuses to sign anything carrying it. The attribute cannot
+be removed from a directory with `xattr -d`, so relocating the build is the fix.
+
+`scripts/afterPack.js` then ad-hoc signs the macOS bundle and verifies the result,
+failing the build if it is bad. Without that step electron-builder leaves Electron's
+original linker signature in place after renaming the bundle, and macOS reports the
+app as **"damaged and can't be opened"** with no way past it. A real Developer ID
+certificate, once configured, signs over the ad-hoc signature.
 
 `node selftest.js <file.csv>` runs the real pipeline against a file and checks the
 output, without opening the window.

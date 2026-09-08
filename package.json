@@ -6,14 +6,16 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder",
-    "dist:mac": "electron-builder --mac",
-    "dist:win": "electron-builder --win",
-    "dist:all": "electron-builder --mac --win"
+    "dist": "electron-builder --config.directories.output=$HOME/.lead-cleaner-build && npm run collect",
+    "dist:mac": "electron-builder --mac --config.directories.output=$HOME/.lead-cleaner-build && npm run collect",
+    "dist:win": "electron-builder --win --config.directories.output=$HOME/.lead-cleaner-build && npm run collect",
+    "dist:all": "electron-builder --mac --win --config.directories.output=$HOME/.lead-cleaner-build && npm run collect",
+    "collect": "mkdir -p dist && cp $HOME/.lead-cleaner-build/*.dmg $HOME/.lead-cleaner-build/*.exe dist/ 2>/dev/null; ls -1 dist"
   },
   "author": "Egen Media",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@electron/osx-sign": "^1.3.3",
     "electron": "^32.2.0",
     "electron-builder": "^25.1.8"
   },
@@ -23,15 +25,43 @@
   "build": {
     "appId": "com.egenmedia.leadcleaner",
     "productName": "Lead Cleaner",
-    "files": ["main.js", "preload.js", "lib/**/*", "renderer/**/*"],
-    "directories": { "output": "dist", "buildResources": "build" },
+    "files": [
+      "main.js",
+      "preload.js",
+      "lib/**/*",
+      "renderer/**/*",
+      "!scripts/**/*"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
     "mac": {
-      "target": [{ "target": "dmg", "arch": ["arm64", "x64"] }],
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
       "category": "public.app-category.productivity"
     },
     "win": {
-      "target": [{ "target": "nsis", "arch": ["x64"] }]
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
     },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "afterPack": "scripts/afterPack.js"
   }
 }
