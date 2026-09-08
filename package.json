@@ -1,0 +1,37 @@
+{
+  "name": "lead-cleaner",
+  "productName": "Lead Cleaner",
+  "version": "1.0.0",
+  "description": "Turns bulky property/skip-trace exports into clean, import-ready contact lists.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:all": "electron-builder --mac --win"
+  },
+  "author": "Egen Media",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^32.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  },
+  "build": {
+    "appId": "com.egenmedia.leadcleaner",
+    "productName": "Lead Cleaner",
+    "files": ["main.js", "preload.js", "lib/**/*", "renderer/**/*"],
+    "directories": { "output": "dist", "buildResources": "build" },
+    "mac": {
+      "target": [{ "target": "dmg", "arch": ["arm64", "x64"] }],
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }]
+    },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
+  }
+}

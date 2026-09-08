@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'">
+<title>Lead Cleaner</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="titlebar"><span class="mark">Lead Cleaner</span></header>
+
+<main>
+  <section id="dropzone">
+    <span class="dz-text">Drop CSV exports here</span>
+    <button id="pick" class="primary sm">Choose files</button>
+  </section>
+
+  <section class="card hidden" id="filesPanel">
+    <div class="card-head">
+      <span class="lbl">Files <b id="fileCount">0</b></span>
+      <span class="head-actions">
+        <button id="addMore" class="link">Add</button>
+        <button id="clear" class="link">Clear</button>
+      </span>
+    </div>
+    <ul id="fileList"></ul>
+  </section>
+
+  <section class="card">
+    <div class="grid">
+      <span class="lbl">Output</span>
+      <div class="ctl">
+        <input id="outputFolder" type="text" readonly placeholder="Not set">
+        <button id="pickFolder" class="sm">Change</button>
+      </div>
+
+      <span class="lbl">Save as</span>
+      <div class="ctl">
+        <label class="chip"><input type="checkbox" id="formatCsv"><span>CSV</span></label>
+        <label class="chip"><input type="checkbox" id="formatXlsx"><span>Excel</span></label>
+      </div>
+
+      <span class="lbl">Phone</span>
+      <div class="ctl">
+        <select id="phoneFormat">
+          <option value="e164">+17034399049</option>
+          <option value="digits">7034399049</option>
+          <option value="pretty">(703) 439-9049</option>
+        </select>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="rules">
+      <label class="cb"><input type="checkbox" id="requirePhone"><i></i><span>Remove rows with no phone</span></label>
+      <label class="cb"><input type="checkbox" id="dedupePhone"><i></i><span>Remove duplicate numbers</span></label>
+      <label class="cb sub" id="scopeWrap"><input type="checkbox" id="dedupeAcrossFiles"><i></i><span>across all selected files</span></label>
+      <label class="cb"><input type="checkbox" id="scrubDnc"><i></i><span>Remove Do Not Call numbers</span></label>
+      <label class="cb" title="Fills more rows, but the email may belong to a different person than the name and phone."><input type="checkbox" id="borrowEmail"><i></i><span>Borrow email from another contact</span></label>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span id="status" class="status"></span>
+  <button id="run" class="primary" disabled>Clean</button>
+</footer>
+
+<div id="resultsOverlay" class="overlay hidden">
+  <div class="sheet">
+    <div class="card-head"><span class="lbl" id="resultsTitle">Done</span><button id="closeResults" class="link">Close</button></div>
+    <div id="resultsBody"></div>
+    <div class="sheet-actions"><button id="revealBtn" class="primary sm">Show in folder</button></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
