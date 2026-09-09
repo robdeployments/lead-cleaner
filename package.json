@@ -1,7 +1,7 @@
 {
   "name": "lead-cleaner",
   "productName": "Lead Cleaner",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Turns bulky property/skip-trace exports into clean, import-ready contact lists.",
   "main": "main.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "dist:mac": "electron-builder --mac --config.directories.output=$HOME/.lead-cleaner-build && npm run collect",
     "dist:win": "electron-builder --win --config.directories.output=$HOME/.lead-cleaner-build && npm run collect",
     "dist:all": "electron-builder --mac --win --config.directories.output=$HOME/.lead-cleaner-build && npm run collect",
-    "collect": "mkdir -p dist && cp $HOME/.lead-cleaner-build/*.dmg $HOME/.lead-cleaner-build/*.exe dist/ 2>/dev/null; ls -1 dist"
+    "collect": "node scripts/collect.js"
   },
   "author": "Egen Media",
   "license": "UNLICENSED",

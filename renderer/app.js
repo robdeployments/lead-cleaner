@@ -15,7 +15,6 @@ async function boot() {
   settings = await window.api.getSettings();
   for (const k of CHECKS) $(k).checked = !!settings[k];
   $('outputFolder').value = settings.outputFolder || '';
-  $('phoneFormat').value = settings.phoneFormat || 'e164';
   syncScope();
   render();
 }
@@ -31,7 +30,6 @@ for (const k of CHECKS) {
     render();
   });
 }
-$('phoneFormat').addEventListener('change', () => persist({ phoneFormat: $('phoneFormat').value }));
 
 $('pickFolder').addEventListener('click', async () => {
   const f = await window.api.pickFolder();
@@ -121,7 +119,7 @@ $('run').addEventListener('click', async () => {
   running = true; render();
   $('status').textContent = 'Starting…';
 
-  const opts = { outputFolder: $('outputFolder').value, phoneFormat: $('phoneFormat').value };
+  const opts = { outputFolder: $('outputFolder').value };
   for (const k of CHECKS) opts[k] = $(k).checked;
 
   const res = await window.api.run({ files: usable.map((f) => f.path), opts });

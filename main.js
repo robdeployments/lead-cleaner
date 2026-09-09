@@ -16,7 +16,6 @@ const DEFAULTS = {
   dedupePhone: true,      // same number twice -> keep the first row only
   dedupeAcrossFiles: true,
   borrowEmail: false,     // don't pull an email off a different contact
-  phoneFormat: 'e164',
 };
 
 let settingsPath;

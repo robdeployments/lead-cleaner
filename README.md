@@ -54,6 +54,18 @@ number of contacts and phones per contact does not matter, gaps in the numbering
 are fine, and variants like `Contact1_First` or `Property Address` are recognised.
 Files with no phone columns are flagged in the file list and skipped.
 
+## Phone numbers
+
+Input is read in whatever shape the export happens to use: `+1`, `1`, `00` or
+`011` prefixes, parentheses, spaces, dots, slashes or dashes in any combination,
+trailing extensions, Excel's numeric mangling (`7034399049.0`,
+`7.034399049e+09`), and cells holding more than one number. Anything that is not
+a dialable North American number is rejected, including service codes such as
+411 and 911 and any non-US number, and the row falls through to its next
+available phone.
+
+Output is always the same shape: `+1703 439 9049`.
+
 ## Installing
 
 Neither build is signed by a paid certificate, so both operating systems warn once.
